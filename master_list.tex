@@ -1,0 +1,620 @@
+% This document has flags available which will affect the compilation and resulting file.
+% The idea for using flags is taken from: https://tex.stackexchange.com/a/19077/73813
+% The idea for using conditionals is taken from: https://tex.stackexchange.com/a/5896/73813
+%
+% To compile this resume with all content use "pdflatex master_list.tex"
+% To compile this resume with some of the content use:
+%   "pdflatex '\def\resumetype{<value>}\input{master_list.tex}'"
+% E.g.
+%   "pdflatex '\def\resumetype{0}\input{master_list.tex}'"
+%
+% Valid values are:
+%   0 - For a software oriented resume
+%
+%
+
+\documentclass[a4paper]{article}
+\usepackage{etoolbox}  % For convenient handling of conditionals.
+
+\newtoggle{software}
+\newtoggle{electrical}
+\newtoggle{portfolio}
+\newtoggle{olderinternships}
+\newtoggle{preuni}
+\newtoggle{allprojects}
+\newtoggle{evaluations}
+
+\toggletrue{software}
+\toggletrue{electrical}
+\toggletrue{portfolio}
+\toggletrue{olderinternships}
+\toggletrue{preuni}
+\toggletrue{allprojects}
+\toggletrue{evaluations}
+
+% Handle flags. All defaults to true.
+\ifdefined\resumetype
+% Case 0 - software
+\ifcase\resumetype\relax
+  \togglefalse{electrical}
+  \togglefalse{olderinternships}
+  \togglefalse{portfolio}
+  \togglefalse{preuni}
+  \togglefalse{allprojects}
+  \togglefalse{evaluations}
+  % \or
+  % Case 1
+  \else
+  % Nothing. But it shouldn't get here unless the wrong value was used.
+  \fi
+\else
+  % No flag provided. Leave defaults (all flags true).
+\fi
+
+
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}  % \section
+\usepackage{anyfontsize}  % \fontsize
+\usepackage[dvipsnames]{xcolor}  % \definecolor
+\usepackage{enumitem}  % For resume bullet items.
+\usepackage{multirow}  % \multirow - for heading.
+
+\usepackage{librebaskerville}  % Use \librebaskerville to set font family
+\renewcommand{\familydefault}{\sfdefault}  % Set default back to standard
+
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage[empty]{fullpage}  % Affects page alignment
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.530in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.55in}
+\addtolength{\textheight}{1in}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-10pt}\fontfamily{cmr}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% --------------------------
+% ---------- Custom Commands
+
+% Colors
+\definecolor{tealblue}{RGB}{31, 78, 121}
+\definecolor{slightgray}{gray}{0.5}
+\definecolor{lightergray}{gray}{0.4}
+
+% Heading title.
+\newcommand{\nametitle}[2]{%
+\librebaskerville%
+\fontseries{b}%
+\fontsize{45}{54}%
+\selectfont%
+#1 \textcolor{tealblue}{#2}
+}
+
+% HeaderSpacing. {left_aligned}{right_aligned}
+\newcommand{\headeralgined}[2]{%
+\normalfont%
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}%
+  #1 & #2 \\%
+\end{tabular*}%
+\vspace{-6pt}%
+}
+
+% Education heading. {Degree}{University}{Years}
+\newcommand{\education}[3]{%
+  \headeralgined{%
+    #1,~\textit{#2}%
+  }{#3}
+}
+
+
+% Experience heading. {Role}{Company}{Dates}
+\newcommand{\experience}[3]{%
+  \headeralgined{%
+    \textbf{#1},~\textit{#2}%
+  }{#3}%
+  \vspace{1pt}
+}
+
+% Project heading. {Name}{Technologies}{Dates}
+\newcommand{\project}[3]{%
+  \headeralgined{%
+    #1~\textemdash~#2%
+  }{#3}
+}
+
+% Performance Evaluation. {Quote}{Name}{Role}{Company}
+\newcommand{\evaluation}[4]{%
+  \textcolor{lightergray}{\textit{"#1"}}%
+  \newline%
+  - #2, #3, \textit{#4}%
+  \vspace{5pt}
+}
+
+% Items under a heading.
+\newcommand{\resumeitemstartlist}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeitemendlist}{\end{itemize}\vspace{2pt}}
+\newcommand{\resumeitem}[1]{%
+  \item{\normalsize{#1\vspace{-4pt}}}%
+}
+
+% -----------------------------------------
+% ---------- End Custom Commands ----------
+
+\begin{document}
+
+{  % Name and contact info
+\begin{flushleft}  % For aligning table left
+  \iftoggle{portfolio}{%
+    \renewcommand{\arraystretch}{1.1}  % Increase row separation
+  }{}
+  \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+    \iftoggle{portfolio}{%
+      \multirow{3}{*}{\nametitle{Chris}{Gravel}}%
+    }{%
+      \multirow{2}{*}{\nametitle{Chris}{Gravel}}%
+    }
+    &
+    \iftoggle{portfolio}{}{%
+      \vspace{5pt}  % Add vertical space only if portfolio is not printed.
+    }
+    \textcolor{slightgray}{%
+      chrisgravel@live.com
+    } \\
+    &
+    \textcolor{slightgray}{%
+      linkedin.com/in/cpagravel
+    } \\
+    \iftoggle{portfolio}{%
+      &
+      \textcolor{slightgray}{%
+        chrisgravel.wixsite.com/portfolio
+      } \\
+    }{}
+  \end{tabular*}
+\end{flushleft}
+\vspace{8pt}
+}
+
+% ---------- Education
+
+\section{Education}
+\education{BASc Mechatronics Engineering with AI Option}{University of Waterloo}{2014 - 2019}
+
+% ---------- Skills
+
+\section{Skills}
+\begin{tabular*}{\textwidth}{l@{\hskip 0.2in}l}%
+  Software Languages
+  &
+  Python,
+  C,
+  C++,
+  Bash,
+  SQL,
+  Matlab,
+  Javascript
+  \\
+
+  Software Tools
+  &
+  Microcontrollers,
+  Linux,
+  ROS,
+  Git,
+  OpenCV
+  \iftoggle{electrical}{\vspace{5pt}}{}  % Add space to separate electrical.
+  \\
+
+  \iftoggle{electrical}{%
+    Electrical Concepts
+    &
+    Motor Controllers,
+    Schematic Capture,
+    PCB Layout,
+    Power Supplies,
+    FPGA Design
+    \\
+
+    Electrical Tools
+    &
+    Oscilloscope,
+    DMM,
+    LCR Meter,
+    Soldering Iron,
+    Signal Generator,
+    Eagle PCB Software
+    \\
+  }{}
+
+\end{tabular*}%
+
+% ---------- Experience
+
+\section{Experience}
+
+
+\experience{Software Engineer (Nest)}{Google LLC}{Sept 2019 - Present}
+\resumeitemstartlist
+{%
+  \resumeitem{%
+    Scoped infrastructure work for supporting test automation for new hardware products.
+    Took ownership of design, and implementation while leading and providing guidance for junior SWEs.
+    Infrastructure supported 20+ hardware devices, 1000+ automation tests, and impacts millions of users.
+    (Python)
+  }
+  \resumeitem{%
+    Ideated and implemented a novel solution that applies statistical tools for detecting software
+    regressions which reduced engineering effort to root cause latency issues from 4 hours to 1 min.
+    (Python, SQL, Jenkins, Two sample T-test, DataStudio)
+  }
+  \resumeitem{%
+    Used optimization and ML techniques to create a flicker detection algorithm with a 96\% recall rate.
+    (Python, numpy, scipy, skimage)
+  }
+  \resumeitem{%
+    Worked with cross functional teams to design and implement infrastructure that analyzed power measurements and generated software regression signals.
+    Test became the most productive test at Nest with over 50 actionable signals that drove product decisions.
+    (Python, numpy)
+  }
+}
+\resumeitemendlist
+
+
+\experience{Perception Team Engineer}{Avidbots Corp.}{May 2018 - Aug 2018}
+\resumeitemstartlist
+{%
+  \resumeitem{%
+    Developed mathematical model for optimal sensor layout for cliff detection using 1D sensors.
+    (Python, Geometry, Numerical Methods)
+  }
+  \resumeitem{%
+    Automated collection and labelling of vision data using localization information and camera feeds on the robot.
+    (OpenCV, Python, and C++).
+  }
+}
+\resumeitemendlist
+
+
+\experience{IoT \& AI Developer}{IBM}{Sept 2017 - Dec 2017}
+\resumeitemstartlist
+{%
+  \resumeitem{%
+    Created real-time object recognition solution with 95\% accuracy for POC contract using
+    supervised learning on a FasterRCNN network.
+    (Python, FasterRCNN)
+  }
+}
+\resumeitemendlist
+
+
+\experience{Robotics Software Developer}{Avidbots Corp.}{Jan 2017 - April 2017}
+\resumeitemstartlist
+{%
+  \resumeitem{%
+    Developed numerical model in C++ and Matlab for simulating trajectory to determine traversal time.
+    (C++, Python, ROS, Matlab, Numerical Methods)
+  }
+  \resumeitem{%
+    Improved performance by 10\% by applying low pass filters to trajectory coordinates using OpenCV.
+    (C++, ROS, OpenCV)
+  }
+  \resumeitem{%
+    Wrote unit tests for a robotics system on the ROS platform in C++ using the Google test framework.
+    (C++, ROS)
+  }
+}
+\resumeitemendlist
+
+\iftoggle{electrical}{%
+  \experience{Junior Hardware Designer}{Imagine Communications}{May 2016 - Aug 2016}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Optimized FPGA Ethernet receiver by reducing CPU read operations by 8x.
+    }
+    \resumeitem{%
+      Automated testing using Python scripts to communicate with instruments
+    }
+  }
+  \resumeitemendlist
+
+
+  \experience{Mechatronics Prototyper}{Engineering Ideas Clinic}{Sept 2015 - Dec 2015}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Created schematics, layouts, and soldered PCBs to create proof of concept prototypes
+    }
+    \resumeitem{%
+      Salvaged parts from E-waste bins for use in prototypes to save over \$1,000 in resources
+    }
+    \resumeitem{%
+      Designed and built an AM Radio to be used as a teaching aid for 4th year electrical students.
+    }
+  }
+  \resumeitemendlist
+
+
+  \experience{Web App Developer}{Computer Science Computing Facility}{Jan 2015 - April 2015}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Improved performance of a core web app by 2,000\%, reducing page load time by 13 seconds.
+    }
+    \resumeitem{%
+      Indexed database by cardinality to improve lookup time in relational database.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+\iftoggle{preuni}{%
+  \experience{Roughneck}{Nabors Drilling Ltd.}{Jan 2013 - Dec 2013}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Applied mechanical knowledge to fix and maintain industrial pumps and hydraulic motors.
+    }
+    \resumeitem{%
+      Assisted mechanic with routine repairs to large megawatt diesel generator.
+    }
+  }
+  \resumeitemendlist
+
+
+  \experience{Infantryman}{Canadian Military}{Jan 2004 - Dec 2009}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Exercised discipline and teamwork to perform coordinated large scale military operations in Afghanistan.
+    }
+    \resumeitem{%
+      Adapted to harsh environments and working conditions to achieve mission objectives.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+% ---------- Engineering Projects
+
+\section{Engineering Projects}
+\ifboolexpr{ togl {software} or togl {allprojects} }{%
+  \project{Optimization of Vehicle Suspension using Enhanced Hillclimbing}{Python, Matlab}{2018}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Created a novel search algorithm that outperforms other state-of-the-art search algorithms in the field.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+
+\ifboolexpr{ togl {electrical} or togl {allprojects} }{%
+  \project{Autonomous Submarine Robot}{Python, Bash, OpenCV, Electrical CAD}{2018}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Designed an autonomous submarine that navigates an obstacle course.
+    }
+    \resumeitem{%
+      Designed software system to optimize for I/O sensor readings and maximize resource utilization.
+    }
+    \resumeitem{%
+      Implemented localization using OpenCV on webcam feed to find prominent features in the environment.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+
+% \iftoggle{software}{%
+\ifboolexpr{ togl {software} or togl {allprojects} }{%
+  \project{gst - (G)it (St)atus Tool}{Python}{2018}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Commandline tool for improving my own Git workflow. Compatible with Mac and Linux.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+
+\ifboolexpr{ togl {software} or togl {allprojects} }{%
+  \project{Asteroids Game built on ARM Cortex-M microcontroller}{C}{2016}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Re-created the game of Asteroids on an ARM Cortex-M microcontroller with RTOS.
+    }
+    \resumeitem{%
+      Used semaphores and mutexes to enable synchronous multitasking operations.
+    }
+    \resumeitem{%
+      Created Physics engine to model the original game physics.
+    }
+  }
+  \resumeitemendlist
+}{}
+
+
+\iftoggle{allprojects}{%
+  \project{Line Following Robot}{C}{2016}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Constructed circuitry for filtering signals from hall effect sensors and photodiodes.
+    }
+    \resumeitem{%
+      Programmed PIC microcontroller with logic necessary to follow line.
+    }
+    \resumeitem{%
+      Debugged hardware and software problems.
+    }
+  }
+  \resumeitemendlist
+}
+
+
+\iftoggle{allprojects}{%
+  \project{Real-Time Memory Management using Half-Fit Algorithm}{C}{2016}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Implemented the half-fit memory managing algorithm designed for a real-time system.
+    }
+  }
+  \resumeitemendlist
+}
+
+
+\ifboolexpr{ togl {electrical} or togl {allprojects} }{%
+  \project{Linear Variable Differential Transformer}{Schematic Capture, Breadboarding, Oscilloscope}{2016}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Created a measuring sensor with a precision of 0.1 mm using magnetic coupling between transformers.
+    }
+    \resumeitem{%
+      Used an isolation transformer to prevent the change in load from affecting the measurement.
+    }
+  }
+  \resumeitemendlist
+}
+
+
+\ifboolexpr{ togl {electrical} or togl {allprojects} }{%
+  \project{Amplitude Modulated Long Wave Radio Receiver}{Schematic Capture, PCB Design, Oscilloscope}{2015}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Tuned resonant frequency of tank circuit to receive signals in the range of 400-800 kHz with high Q.
+    }
+    \resumeitem{%
+      Biased BJT transistor to amplify incoming signal from 0.2V to 2V to overcome voltage drop in envelope detector.
+    }
+  }
+  \resumeitemendlist
+}
+
+
+\ifboolexpr{ togl {electrical} or togl {allprojects} }{%
+  \project{High Speed Pickup Winder With LCD Interface}{Schematic Capture, Arduino}{2015}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Designed uni-polar motor controller circuit with heat sink and pulse width modulated power control.
+    }
+    \resumeitem{%
+      Used Arduino timer interrupts to achieve a rate of 3500 rpm, winding a pickup in 10 minutes—54x faster than prior design.
+    }
+  }
+  \resumeitemendlist
+}
+
+
+\iftoggle{allprojects}{%
+  \project{Medical Compactable Ergonomic Chair}{CAD}{2015}
+  \resumeitemstartlist
+  {%
+    \resumeitem{%
+      Donated over 200 hours to design and build a special chair for a man with debilitating nerve pain.
+    }
+  }
+  \resumeitemendlist
+}
+
+% ---------- Achievements
+
+\section{Achievements}
+\resumeitemstartlist
+{%
+  \resumeitem{%
+    Runner-up in an international IBM internal coding competition (CodeBlue 2017)
+  }
+  \resumeitem{%
+    Received multiple awards (4 spot bonuses, 2 peer bonuses) at Google due to impact of contributions.
+  }
+  \iftoggle{preuni}{%
+    \resumeitem{%
+      Campaign Medal from serving in Afghanistan in 2008 with the Canadian Military.
+    }
+    \resumeitem{%
+      Hosted a tour and travel TV show in Indonesia with over 1,000,000 viewers.
+    }
+  }{}
+}
+\resumeitemendlist
+
+% ---------- Performance Evaluations
+\pagebreak
+\iftoggle{evaluations}{%
+  \begin{samepage}
+
+    \section{Internship Evaluations}
+    \vspace{5pt}
+    \evaluation{%
+      Chris performed beyond all our expectations and was instrumental in completing critical tasks
+      for a client project. We were able to depend on him to complete his work in a timely manner with
+      high quality and he was enthusiastic in his desire to learn and contribute to the team.
+      Excellent work!%
+    }{Asim Raoof}{Senior Application Developer}{IBM}
+
+    \evaluation{%
+      Superbly well-rounded, was able to keep up with and surpass the performance of veteran full-time
+      employees on the team. He made many sound and informative suggestions, led and executed on ideas
+      he resourcefully managed, and thoroughly educated the team on the rationale of all decisions.
+      His technical capabilities and understanding of start-up business challenges help inform his
+      conduct on all tasks. He was always passionate and intrigued by all aspects of work.
+      He was capable of working autonomously with minimal supervision.%
+    }{Kenneth Lee}{Coverage Planning Team Lead}{Avidbots}
+
+    \evaluation{%
+      Chris' efforts throughout the term contributed greatly to the success of the both new, and
+      existing, activities this semester. By the end of the term, the team of clinic co-ops were
+      functioning as a well-oiled machine, rotating in and out of tasks as needed with minimal
+      supervision. With very little supervision, when Chris had a question that needed answering,
+      he tracked down the correct person to answer it. The quality of his work was exemplary throughout
+      the term, with the guitar pickup winder being a notable example. Chris' enthusiasm for the work,
+      and for learning, carried him through the term. Chris has a bright future ahead if he can just
+      slow and enjoy the sights a little.%
+    }{Chris Rennick}{Engineering Educational Developer}{Engineering Ideas Clinic}
+
+    \evaluation{%
+      Christopher worked with us to develop lab equipment for engineering education. He was given a
+      very challenging project and there was little direction from his supervisors. He was able to get
+      the project finished to a degree that was beyond anyone's expectations. Furthermore,
+      Christopher's work ethic was impeccable. He routinely sought out contacts and resources to help
+      him get the job done, and was always there when needed for urgent projects.%
+    }{Mike Stachowski}{Engineering Educational Developer}{Engineering Ideas Clinic}
+
+    \evaluation{%
+      Christopher was all around an ideal employee, and a great fit for our group. He came in with good
+      web developer habits, fit in with our group quite well, set the bar extremely high for his own work,
+      and delivered more than what was asked- sometimes much more, within the amount of time we had budgeted.
+      He left us having learned a number of things about web frameworks, git, and many other topics
+      (ask him- there will probably be a story involved!)%
+    }{Daniel Allen}{Information Technology Specialist}{CSCF Web Development}
+
+  \end{samepage}
+}{}
+
+
+\end{document}
