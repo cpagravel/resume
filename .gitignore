@@ -1,0 +1,9 @@
+.commit
+.aux
+.bak*
+.fdb*
+.fls
+.log
+.text
+.synctex
+.gz

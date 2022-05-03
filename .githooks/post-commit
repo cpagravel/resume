@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Check whether .commit exists which indicates the state of committing.
+# If it exists, rebuild the pdf files, add them to repo and ammend the commit.
+
+echo
+if [ -e .commit ]
+    then
+    rm .commit
+    . build_resumes.sh
+    git add *.pdf
+    git commit --amend -C HEAD --no-verify
+fi
+exit

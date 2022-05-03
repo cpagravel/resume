@@ -1,9 +1,7 @@
 ## Greetings!
 
-If you're here. You might be interested in reading my resume, or you're looking for sample
-latex resumes.
+I have two resumes here. The resume you most likely want to view is [software](software.pdf).
 
-If you're interested in my resume, please take a look at my [software](software.pdf) resume.
-This is a condensed version of the [master_list](master_list.pdf) resume which is for my own
-reference.
+[software](software.pdf) - My software oriented resume.
 
+[master_list](master_list.pdf) - A larger list of professional experience which doesn't all pertain to software.

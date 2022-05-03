@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Before committing a .commit file is created for interaction with post-commit hook.
+# The purpose of the .commit file is to provide an indication of state.
+#
+echo
+touch .commit
+exit
