@@ -8,7 +8,7 @@ if [ -e .commit ]
     then
     rm .commit
     . build_resumes.sh
-    git add *.pdf
+    git add -u
     git commit --amend -C HEAD --no-verify
 fi
 exit
