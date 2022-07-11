@@ -17,6 +17,7 @@
 \usepackage{etoolbox}  % For convenient handling of conditionals.
 
 \newtoggle{software}
+\newtoggle{hardwareswe}
 \newtoggle{electrical}
 \newtoggle{portfolio}
 \newtoggle{olderinternships}
@@ -25,6 +26,7 @@
 \newtoggle{evaluations}
 
 \toggletrue{software}
+\toggletrue{hardwareswe}
 \toggletrue{electrical}
 \toggletrue{portfolio}
 \toggletrue{olderinternships}
@@ -36,6 +38,8 @@
 \ifdefined\resumetype
 % Case 0 - software
 \ifcase\resumetype\relax
+  \toggletrue{software}
+  \togglefalse{hardwareswe}
   \togglefalse{electrical}
   \togglefalse{olderinternships}
   \togglefalse{portfolio}
@@ -43,8 +47,16 @@
   \togglefalse{allprojects}
   \togglefalse{evaluations}
   % \or
-  % Case 1
+  % Case 1 - hardware swe
   \else
+  \toggletrue{software}
+  \toggletrue{hardwareswe}
+  \togglefalse{electrical}
+  \togglefalse{olderinternships}
+  \togglefalse{portfolio}
+  \togglefalse{preuni}
+  \togglefalse{allprojects}
+  \togglefalse{evaluations}
   % Nothing. But it shouldn't get here unless the wrong value was used.
   \fi
 \else
@@ -325,15 +337,21 @@
 }
 \resumeitemendlist
 
-\iftoggle{electrical}{%
+\ifboolexpr{ togl {electrical} or togl {hardwareswe} }{%
   \experience{Junior Hardware Designer}{Imagine Communications}{May 2016 - Aug 2016}
   \resumeitemstartlist
   {%
     \resumeitem{%
-      Optimized FPGA Ethernet receiver by reducing CPU read operations by 8x.
+      Wrote VHDL code to optimize FPGA implementation of an Ethernet receiver which reduced read clock cycles by 8x.
+      \tech{(VHDL)}
     }
     \resumeitem{%
-      Automated testing using Python scripts to communicate with instruments
+      Designed and implemented a FPGA component which captures and records ethernet packets for debugging.
+      \tech{(VHDL)}
+    }
+    \resumeitem{%
+      Automated hardware testing using electrical instrumentation and Python APIs.
+      \tech{(Python)}
     }
   }
   \resumeitemendlist

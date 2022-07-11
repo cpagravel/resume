@@ -4,3 +4,4 @@
 
 pdflatex -jobname=master_list master_list.tex
 pdflatex -jobname=software '\def\resumetype{0}\input{master_list.tex}'
+pdflatex -jobname=hardwareswe '\def\resumetype{1}\input{master_list.tex}'
